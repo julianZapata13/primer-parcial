@@ -18,24 +18,24 @@
         <tr>
             <th scope="col" class="producto">ID COMPETENCIA</th>
             <th scope="col" class="producto">NOMBRE COMPETENCIA</th>
-            <th scope="col" class="producto">DESCRPCION</th>
+            <th scope="col" class="producto">DESCRIPCIÓN</th>
             <th scope="col" class="producto"></th>
         </tr>
         </thead>
     
         <tbody>
-        <tr *ngFor="let competencia of competencias"class="table-light">
-            <th scope="row"class="producto">{{competencia.idCompetencia}}</th>
-            <th scope="row"class="producto">{{competencia.nombre}}</th>
-            <th scope="row"class="producto">{{competencia.descripciones}}</th>
-            <th scope="row">  
-            <div class="d-flex justify-content-around">
-                <img *ngIf="competencia.comportamientos.length!=0" (click)="verComportamientos(competencia.idCompetencia)" src="https://img.icons8.com/fluent/48/000000/view.png"/>
-                <img (click)="openAgregarComportamientos(competencia.idCompetencia,mimodal)"src="https://img.icons8.com/color/48/000000/add--v1.png"/>
-                <img (click)="eliminararCompetencia(competencia.idCompetencia)" src="https://img.icons8.com/fluent/48/000000/delete-forever.png"/>
-            </div>
-            </th>
-        </tr> 
+          <tr *ngFor="let competencia of competencias"class="table-light">
+              <th scope="row"class="producto">{{competencia.idCompetencia}}</th>
+              <th scope="row"class="producto">{{competencia.nombre}}</th>
+              <th scope="row"class="producto">{{competencia.descripciones}}</th>
+              <th scope="row">  
+              <div class="d-flex justify-content-around">
+                  <img *ngIf="competencia.comportamientos.length!=0" (click)="verComportamientos(competencia.idCompetencia)" src="https://img.icons8.com/fluent/48/000000/view.png"/>
+                  <img (click)="openAgregarComportamientos(competencia.idCompetencia,mimodal)"src="https://img.icons8.com/color/48/000000/add--v1.png"/>
+                  <img (click)="eliminararCompetencia(competencia.idCompetencia)" src="https://img.icons8.com/fluent/48/000000/delete-forever.png"/>
+              </div>
+              </th>
+          </tr> 
         </tbody>
     </table>
   
@@ -52,7 +52,7 @@
         
         <div class="modal-body">
         <div class="form-group">
-            <label for="formGroupExampleInput">Descripcion</label>
+            <label for="formGroupExampleInput">Descripción</label>
             <input  (ngModelChange)="validarFormComporta()" type="text" class="form-control" id="formGroupExampleInput" placeholder="Agregar descripcion"[(ngModel)]="descripcion">
         </div>
     
@@ -69,12 +69,12 @@
 </div>
 
 <div *ngIf="visualizarComportamientos">
-    <h4>Comportamientos de la competecica N°{{idCompe}}</h4>
+    <h4>Comportamientos de la competencia N°{{idCompe}}</h4>
     <table  class="table">
     <thead class="bg-warning">
       <tr>
         <th scope="col" class="producto">ID COMPORTAMIENTO</th>
-        <th scope="col" class="producto">DESCRIPCION</th>
+        <th scope="col" class="producto">DESCRIPCIÓN</th>
         <th scope="col" class="producto">PORCENTAJE</th>
         <th scope="col" class="producto"></th>
       </tr>
@@ -93,5 +93,10 @@
       </tr> 
     </tbody>
     </table>
-    <button  (click)="regresarCompetencias()"  type="button" class="btn btn-primary mx-auto">Regresar a las competencias</button>
+    <p *ngIf="sinComportamientos" class="producto">No hay comportamientos registrados para esta competencia</p>
+   
+    <div class="d-flex justify-content-center " id="boton">
+      <button  (click)="regresarCompetencias()"  type="button" class="btn btn-primary">Regresar a las competencias</button>
+    </div>>
+    
 </div>

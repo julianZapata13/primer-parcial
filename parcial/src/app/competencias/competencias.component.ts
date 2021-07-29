@@ -29,6 +29,7 @@ export class CompetenciasComponent implements OnInit {
   valorPorcentaje=0;
   visualizarCompetencias:boolean=true;
   visualizarComportamientos:boolean=false;
+  sinComportamientos:boolean=false;
 
   
 
@@ -121,6 +122,10 @@ export class CompetenciasComponent implements OnInit {
         this.comportamientos=buscarCompetencia.comportamientos;
         this.visualizarCompetencias=false;
         this.visualizarComportamientos=true;
+        if(this.comportamientos.length!=0){
+
+          this.sinComportamientos=false;
+        }
         
       }
      console.log(this.comportamientos)
@@ -175,6 +180,13 @@ export class CompetenciasComponent implements OnInit {
      
       let index = this.comportamientos.findIndex(compor => compor.idComportamiento=== idComportamiento);
       var removed = this.comportamientos.splice(index, 1);
+
+      if(this.comportamientos.length==0){
+
+        this.sinComportamientos=true;
+      }
+      
+
      
     } 
       catch(e){
