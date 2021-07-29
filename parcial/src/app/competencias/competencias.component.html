@@ -1,109 +1,97 @@
-<div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="nomfact">Nombre Competencia</label>
-      <input (change)="validarFormCompe()" type="text" id="nomCompetencia" class="form-control" placeholder="Ingrese el nombre de la Competencia" aria-label="Recipient's username" aria-describedby="basic-addon2" [(ngModel)]="nombre">
-    </div> 
-    <div class="form-group col-md-6">
-      <label for="fechafact">Descripción</label>
-      <input  (change)="validarFormCompe()" type="text" id="descripciones" class="form-control" placeholder="Ingrese la descripciones" aria-label="Recipient's username" aria-describedby="basic-addon2" [(ngModel)]="descripciones">
-    </div>   
-    <div class="input-group-append">
-      <button [disabled]="desabilitadoBtnCompe" class="btn btn-success" type="button" (click)="crearCompetencias()">Crear Competencia</button>
-    </div>
-  </div>
+<div *ngIf="visualizarCompetencias">
+
+    <div class="form-row" >
+        <div class="form-group col-md-6">
+        <label for="nomfact">Nombre Competencia</label>
+        <input (ngModelChange)="validarFormCompe()" type="text" id="nomCompetencia" class="form-control" placeholder="Ingrese el nombre de la Competencia" aria-label="Recipient's username" aria-describedby="basic-addon2" [(ngModel)]="nombre">
+        </div> 
+        <div class="form-group col-md-6">
+        <label for="fechafact">Descripción</label>
+        <input  (ngModelChange)="validarFormCompe()" type="text" id="descripciones" class="form-control" placeholder="Ingrese la descripciones" aria-label="Recipient's username" aria-describedby="basic-addon2" [(ngModel)]="descripciones">
+        </div>   
+        <div class="input-group-append">
+        <button [disabled]="desabilitadoBtnCompe" class="btn btn-success" type="button" (click)="crearCompetencias()">Crear Competencia</button>
+    </div></div>
   
-  <table class="table">
-    <thead class="thead-dark">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="producto">ID COMPETENCIA</th>
+            <th scope="col" class="producto">NOMBRE COMPETENCIA</th>
+            <th scope="col" class="producto">DESCRPCION</th>
+            <th scope="col" class="producto"></th>
+        </tr>
+        </thead>
+    
+        <tbody>
+        <tr *ngFor="let competencia of competencias"class="table-light">
+            <th scope="row"class="producto">{{competencia.idCompetencia}}</th>
+            <th scope="row"class="producto">{{competencia.nombre}}</th>
+            <th scope="row"class="producto">{{competencia.descripciones}}</th>
+            <th scope="row">  
+            <div class="d-flex justify-content-around">
+                <img *ngIf="competencia.comportamientos.length!=0" (click)="verComportamientos(competencia.idCompetencia)" src="https://img.icons8.com/fluent/48/000000/view.png"/>
+                <img (click)="openAgregarComportamientos(competencia.idCompetencia,mimodal)"src="https://img.icons8.com/color/48/000000/add--v1.png"/>
+                <img (click)="eliminararCompetencia(competencia.idCompetencia)" src="https://img.icons8.com/fluent/48/000000/delete-forever.png"/>
+            </div>
+            </th>
+        </tr> 
+        </tbody>
+    </table>
+  
+    <p *ngIf="sinCompetencias" class="producto">No hay competencias registradas</p>
+  
+  
+    <ng-template #mimodal let-modal>
+        <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Agregar comportamientos a la Competencia N°{{idCompe}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        
+        <div class="modal-body">
+        <div class="form-group">
+            <label for="formGroupExampleInput">Descripcion</label>
+            <input  (ngModelChange)="validarFormComporta()" type="text" class="form-control" id="formGroupExampleInput" placeholder="Agregar descripcion"[(ngModel)]="descripcion">
+        </div>
+    
+        <div class="form-group">
+            <label for="formGroupExampleInput2">Porcentaje {{porcentaje}}%</label>
+            <input (ngModelChange)="validarFormComporta()" type="range" min="0" max="100" class="form-control" id="formGroupExampleInput2" placeholder="Agrege porcentaje"[(ngModel)]="porcentaje">
+        </div>
+        </div>
+    
+        <div class="modal-footer">
+        <button [disabled]="desabilitadoBtnCompor" type="button" class="btn btn-success" (click)="modal.close('Save click');agregarComportamiento(idCompe)">Agregar</button>
+        </div>
+    </ng-template>
+</div>
+
+<div *ngIf="visualizarComportamientos">
+    <h4>Comportamientos de la competecica N°{{idCompe}}</h4>
+    <table  class="table">
+    <thead class="bg-warning">
       <tr>
-        <th scope="col" class="producto">ID COMPETENCIA</th>
-        <th scope="col" class="producto">NOMBRE COMPETENCIA</th>
-        <th scope="col" class="producto">DESCRPCION</th>
+        <th scope="col" class="producto">ID COMPORTAMIENTO</th>
+        <th scope="col" class="producto">DESCRIPCION</th>
+        <th scope="col" class="producto">PORCENTAJE</th>
         <th scope="col" class="producto"></th>
       </tr>
     </thead>
-  
     <tbody>
-      <tr *ngFor="let competencia of competencias"class="table-light">
-        <th scope="row"class="producto">{{competencia.idCompetencia}}</th>
-        <th scope="row"class="producto">{{competencia.nombre}}</th>
-        <th scope="row"class="producto">{{competencia.descripciones}}</th>
+      <tr *ngFor="let comportamiento of comportamientos"class="table-light">
+        <th scope="row"class="producto">{{comportamiento.idComportamiento}}</th>
+        <th scope="row"class="producto">{{comportamiento.descripcion}}</th>
+        <th scope="row"class="producto">{{comportamiento.porcentaje}}%</th>
         <th scope="row">  
           <div class="d-flex justify-content-around">
-            <img *ngIf="competencia.comportamientos.length!=0" (click)="verComportamientos(competencia.idCompetencia,mimodaldos)"src="https://img.icons8.com/fluent/48/000000/view.png"/>
-            <img (click)="openAgregarComportamientos(competencia.idCompetencia,mimodal)"src="https://img.icons8.com/color/48/000000/add--v1.png"/>
-            <img (click)="eliminararCompetencia(competencia.idCompetencia)" src="https://img.icons8.com/fluent/48/000000/delete-forever.png"/>
+            
+            <img (click)="eliminararComportamiento(comportamiento.idComportamiento)" src="https://img.icons8.com/fluent/48/000000/delete-forever.png"/>
           </div>
         </th>
       </tr> 
     </tbody>
-  </table>
-  
-  <p *ngIf="sinCompetencias" class="producto">No hay competencias registradas</p>
-  
-  
-  <ng-template #mimodal let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Agregar comportamientos a la Competencia N°{{idCompe}}</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    
-    <div class="modal-body">
-      <div class="form-group">
-        <label for="formGroupExampleInput">Descripcion</label>
-        <input (change)="validarFormComporta()" type="text" class="form-control" id="formGroupExampleInput" placeholder="Agregar descripcion"[(ngModel)]="descripcion">
-      </div>
-  
-      <div class="form-group">
-        <label for="formGroupExampleInput2">Porcentaje %</label>
-        <input (change)="validarFormComporta()" type="number" min="0" max="100" required pattern="[0-9]+" class="form-control" id="formGroupExampleInput2" placeholder="Agrege porcentaje"[(ngModel)]="porcentaje">
-      </div>
-    </div>
-  
-    <div class="modal-footer">
-      <button [disabled]="desabilitadoBtnCompor" type="button" class="btn btn-success" (click)="modal.close('Save click');agregarComportamiento(idCompe)">Agregar</button>
-    </div>
-  </ng-template>
-  
-  <ng-template #mimodaldos let-modal>
-  
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Comportamientos de la competencia N°{{idCompe}}</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  
-    <div class="modal-body">
-      <div > 
-        <table class="table">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col" class="producto">ID COMPORTAMIENTO</th>
-                <th scope="col" class="producto">DESCRIPCION</th>
-                <th scope="col" class="producto">PORCENTAJE</th>
-                <th scope="col" class="producto"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let comportamiento of comportamientos"class="table-light">
-                <th scope="row"class="producto">{{comportamiento.idComportamiento}}</th>
-                <th scope="row"class="producto">{{comportamiento.descripcion}}</th>
-                <th scope="row"class="producto">{{comportamiento.porcentaje}}</th>
-                <th scope="row">  
-                  <div class="d-flex justify-content-around">
-                    
-                    <img (click)="eliminararComportamiento(comportamiento.idComportamiento)" src="https://img.icons8.com/fluent/48/000000/delete-forever.png"/>
-                  </div>
-                </th>
-              </tr> 
-            </tbody>
-        </table>
-      </div>
-    </div>
-  
-    <div class="modal-footer">
-      <button  type="button" class="btn btn-primary" (click)="modal.close('Save click')">Cerrar</button>
-    </div>
-  </ng-template>
+    </table>
+    <button  (click)="regresarCompetencias()"  type="button" class="btn btn-primary mx-auto">Regresar a las competencias</button>
+</div>

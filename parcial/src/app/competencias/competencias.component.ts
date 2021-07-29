@@ -26,6 +26,10 @@ export class CompetenciasComponent implements OnInit {
   desabilitadoBtnCompor:boolean=true;
   descripcion="";
   porcentaje=0;
+  valorPorcentaje=0;
+  visualizarCompetencias:boolean=true;
+  visualizarComportamientos:boolean=false;
+
   
 
   
@@ -50,7 +54,7 @@ export class CompetenciasComponent implements OnInit {
       console.log("An error occurred on validarFormCompe=>",e)
     }
   }
-
+  
   validarFormComporta(){
     
     try{
@@ -58,13 +62,13 @@ export class CompetenciasComponent implements OnInit {
       if(this.descripcion!=""){
      
         this.desabilitadoBtnCompor=false
+        
       }
       else{
         this.desabilitadoBtnCompor=true
-        
+       
       }
     
-     
     }
     catch(e){
       console.log("An error occurred on validarFormComporta=>",e)
@@ -97,6 +101,7 @@ export class CompetenciasComponent implements OnInit {
       console.log(idCompetencia)
       this.desabilitadoBtnCompor=true;
       this.modalService.open(content)
+      
      
     }
     catch(e){
@@ -104,8 +109,7 @@ export class CompetenciasComponent implements OnInit {
     }
   }
 
-
-  verComportamientos(idCompetencia:number,content: any){
+  verComportamientos(idCompetencia:number){
     try{
 
       this.idCompe=idCompetencia;
@@ -115,7 +119,9 @@ export class CompetenciasComponent implements OnInit {
       }
       else{
         this.comportamientos=buscarCompetencia.comportamientos;
-        this.modalService.open(content)
+        this.visualizarCompetencias=false;
+        this.visualizarComportamientos=true;
+        
       }
      console.log(this.comportamientos)
     }
@@ -147,8 +153,6 @@ export class CompetenciasComponent implements OnInit {
     }
   }
 
-
-
   ///----------funcion eliminar competencia------------------------
   eliminararCompetencia(idCompetencia:number){
   try{
@@ -165,6 +169,7 @@ export class CompetenciasComponent implements OnInit {
     }
   }
 
+  //----------funcion eliminar comportamiento----------------------------
   eliminararComportamiento(idComportamiento:number){
     try{
      
@@ -174,6 +179,19 @@ export class CompetenciasComponent implements OnInit {
     } 
       catch(e){
         console.log("An error occurred on eliminararComportamiento=>",e)
+      }
+    }
+
+  regresarCompetencias(){
+      try{
+        
+        this.visualizarCompetencias=true;
+        this.visualizarComportamientos=false;
+  
+       
+      }
+      catch(e){
+        console.log("An error occurred on validarFormCompe=>",e)
       }
     }
 }
